@@ -1,0 +1,642 @@
+<title>Baby shower de Elías</title>
+<meta name="description" content="Invitación al baby shower de Elías, con temática de dragones bebé.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,400;1,9..144,600&family=Nunito:wght@600;700;800&display=swap">
+<style>
+  /* Layout: una sola columna centrada tipo tarjeta, cielo claro con nubes y estrellas al fondo.
+     Un solo tema (invitación impresa en papel crema), colores fijos a propósito. */
+  :root {
+    --paper: #f7f3ea;
+    --paper-deep: #efe8da;
+    --card: rgba(255, 252, 246, 0.82);
+    --line: rgba(94, 115, 82, 0.22);
+    --ink: #3b3a34;
+    --muted: #7b776c;
+    --sage: #7f9470;
+    --sage-deep: #5e7352;
+    --sand: #d8ccb6;
+    --sand-deep: #b9a98c;
+    --sky: #b9c9df;
+    --sky-deep: #8fa6c7;
+    --star: #f1d77f;
+    --star-deep: #d9b94e;
+    --display: 'Fraunces', 'Georgia', 'Times New Roman', serif;
+    --body: 'Nunito', 'Trebuchet MS', system-ui, sans-serif;
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    background-image:
+      radial-gradient(ellipse 80% 45% at 50% 0%, rgba(185, 201, 223, 0.55) 0%, rgba(185, 201, 223, 0) 70%),
+      radial-gradient(circle at 0% 100%, rgba(127, 148, 112, 0.18) 0%, rgba(127, 148, 112, 0) 45%),
+      radial-gradient(circle at 100% 80%, rgba(216, 204, 182, 0.5) 0%, rgba(216, 204, 182, 0) 45%);
+    background-attachment: fixed;
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 16px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+  a { color: var(--sage-deep); }
+  .page {
+    position: relative;
+    max-width: 460px;
+    margin: 0 auto;
+    padding: 18px 16px calc(28px + env(safe-area-inset-bottom));
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+  .page > * { position: relative; z-index: 1; }
+
+  /* cielo de fondo */
+  .sky { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .sky canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .cloud { position: absolute; width: 260px; height: 90px; border-radius: 999px; background: rgba(255, 255, 255, 0.75); filter: blur(22px); opacity: 0.9; will-change: transform; }
+  .cloud-1 { left: -120px; top: 10%; animation: drift1 48s linear infinite; }
+  .cloud-2 { right: -160px; top: 36%; width: 320px; height: 110px; animation: drift2 60s linear infinite; }
+  .cloud-3 { left: 20%; bottom: 8%; width: 220px; height: 80px; animation: drift1 54s linear infinite reverse; }
+  @keyframes drift1 { from { transform: translateX(-40px); } to { transform: translateX(calc(100vw + 200px)); } }
+  @keyframes drift2 { from { transform: translateX(40px); } to { transform: translateX(calc(-100vw - 320px)); } }
+
+  /* huevo de entrada */
+  body.locked { overflow: hidden; }
+  .intro { position: fixed; inset: 0; z-index: 10; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; padding: 24px; background: radial-gradient(ellipse at 50% 42%, rgba(255, 255, 255, 0.95) 0%, rgba(247, 243, 234, 0) 62%), var(--paper-deep); transition: opacity 700ms ease, visibility 0s linear 700ms; }
+  .intro.open { opacity: 0; visibility: hidden; }
+  .egg { position: relative; width: min(320px, 78vw); padding: 0; border: 0; background: none; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .egg:focus-visible { outline: 3px solid var(--sky-deep); outline-offset: 12px; border-radius: 50%; }
+  .egg svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .egg .shell { transform-origin: 170px 292px; animation: wobble 4.6s ease-in-out infinite; }
+  @keyframes wobble {
+    0%, 55% { transform: rotate(0deg); }
+    60% { transform: rotate(-4deg) translateX(-2px); }
+    64% { transform: rotate(4deg) translateX(2px); }
+    68% { transform: rotate(-3deg); }
+    72% { transform: rotate(2deg); }
+    76%, 100% { transform: rotate(0deg); }
+  }
+  .egg.shake .shell { animation: shake 160ms ease-in-out infinite; }
+  @keyframes shake {
+    0%, 100% { transform: rotate(-6deg) translateX(-3px); }
+    50% { transform: rotate(6deg) translateX(3px); }
+  }
+  .egg .crack { stroke-dasharray: 260; stroke-dashoffset: 260; transition: stroke-dashoffset 520ms ease-out; }
+  .egg.shake .crack, .egg.open .crack { stroke-dashoffset: 0; }
+  .egg .egg-top, .egg .egg-bottom { transition: transform 820ms cubic-bezier(.34, 1.3, .4, 1), opacity 420ms ease 420ms; }
+  .egg .egg-top { transform-origin: 254px 150px; }
+  .egg .egg-bottom { transform-origin: 170px 292px; }
+  .egg.open .shell { animation: none; }
+  .egg.open .egg-top { transform: translate(-70px, -150px) rotate(-55deg); opacity: 0; }
+  .egg.open .egg-bottom { transform: translateY(26px) scale(0.92); opacity: 0; transition-delay: 150ms, 650ms; }
+  .egg .frag { opacity: 0; transform-origin: center; }
+  .egg.open .frag { animation: fly 900ms cubic-bezier(.2, .7, .3, 1) forwards; }
+  .egg.open .frag.f2 { animation-delay: 40ms; }
+  .egg.open .frag.f3 { animation-delay: 80ms; }
+  @keyframes fly {
+    0% { opacity: 1; transform: translate(0, 0) rotate(0deg); }
+    100% { opacity: 0; transform: translate(var(--dx), var(--dy)) rotate(var(--rot)); }
+  }
+  .egg .peek { opacity: 0; transform: translateY(70px) scale(0.45); transform-origin: 170px 200px; transition: opacity 320ms ease 120ms, transform 900ms cubic-bezier(.2, 1.1, .3, 1.15) 120ms; }
+  .egg.open .peek { opacity: 1; transform: translateY(-40px) scale(1); }
+  .egg .glow { opacity: 0; transform: scale(0.4); transform-origin: 170px 170px; transition: opacity 500ms ease 150ms, transform 1100ms cubic-bezier(.2, .8, .2, 1) 150ms; }
+  .egg.open .glow { opacity: 1; transform: scale(1.35); }
+  .egg .burst { opacity: 0; transform-origin: 170px 170px; }
+  .egg.open .burst { animation: burst 1100ms cubic-bezier(.2, .8, .3, 1) 200ms forwards; }
+  @keyframes burst {
+    0% { opacity: 0; transform: rotate(0deg) scale(0.2); }
+    25% { opacity: 1; }
+    100% { opacity: 0; transform: rotate(25deg) scale(1.25); }
+  }
+  .intro-hint { margin: 0; font-size: 14px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: var(--sage-deep); animation: pulse 1.8s ease-in-out infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+  .intro-note { margin: 0; font-size: 12px; color: var(--muted); }
+  .egg.open ~ .intro-hint, .egg.shake ~ .intro-hint { opacity: 0; animation: none; transition: opacity 200ms ease; }
+  body.revealed .page { animation: rise 700ms ease both; }
+  @keyframes rise { from { opacity: 0.4; } to { opacity: 1; } }
+  .flyer { position: fixed; left: 0; top: 0; z-index: 12; display: none; pointer-events: none; object-fit: contain; transform-origin: 0 0; will-change: transform; filter: drop-shadow(0 16px 22px rgba(59, 58, 52, 0.16)); }
+  .flyer.show { display: block; }
+
+  /* botón de sonido */
+  .sound { position: fixed; right: 16px; bottom: calc(16px + env(safe-area-inset-bottom)); z-index: 5; width: 48px; height: 48px; border-radius: 50%; border: 1.5px solid var(--line); background: rgba(255, 252, 246, 0.92); color: var(--sage-deep); display: none; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 6px 18px rgba(59, 58, 52, 0.18); }
+  .sound.show { display: flex; }
+  .sound:focus-visible { outline: 3px solid var(--sky-deep); outline-offset: 3px; }
+  .sound .off { display: none; }
+  .sound.muted .on { display: none; }
+  .sound.muted .off { display: block; }
+
+
+  /* Íconos: Font Awesome Free 6.5.2 (SVG incrustado), CC BY 4.0 — https://fontawesome.com/license/free */
+  .fa { display: inline-block; height: 1em; width: auto; vertical-align: -0.125em; flex: none; }
+  .fa-row { font-size: 24px; color: var(--sage); }
+  .fa-btn { font-size: 20px; }
+  .fa-snd { font-size: 20px; }
+
+  /* hero */
+  .hero { display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; }
+  .eyebrow { margin: 0; font-size: 12px; font-weight: 800; letter-spacing: 4px; text-transform: uppercase; color: var(--sage-deep); }
+  .stage { position: relative; width: 100%; max-width: 360px; margin: 4px 0 0; }
+  .stage .halo { position: absolute; left: 50%; top: 55%; width: 78%; aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; background: radial-gradient(circle, rgba(185, 201, 223, 0.7) 0%, rgba(185, 201, 223, 0) 70%); }
+  .stage .flying { position: relative; width: 82%; height: auto; display: block; margin: 0 auto; animation: hover 4.2s ease-in-out infinite; filter: drop-shadow(0 16px 22px rgba(59, 58, 52, 0.16)); }
+  @keyframes hover { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-12px) rotate(-2deg); } }
+  .stage .flying.wait { visibility: hidden; animation: none; }
+  .stage .spark { position: absolute; width: 18px; height: 18px; color: var(--star); animation: twinkle 2.4s ease-in-out infinite; }
+  .stage .spark.s1 { left: 6%; top: 18%; }
+  .stage .spark.s2 { right: 8%; top: 12%; width: 24px; height: 24px; animation-delay: 0.7s; }
+  .stage .spark.s3 { right: 14%; bottom: 14%; width: 14px; height: 14px; animation-delay: 1.3s; }
+  .stage .spark.s4 { left: 12%; bottom: 20%; animation-delay: 0.3s; }
+  @keyframes twinkle { 0%, 100% { opacity: 0.35; transform: scale(0.8) rotate(0deg); } 50% { opacity: 1; transform: scale(1.1) rotate(20deg); } }
+  .invite { margin: 10px 0 0; font-size: 14px; font-weight: 700; letter-spacing: 1.5px; color: var(--muted); }
+  .name { margin: 0; font-family: var(--display); font-weight: 600; font-style: italic; font-size: 76px; line-height: 1; color: var(--sage-deep); letter-spacing: -1px; text-wrap: balance; }
+  .surname { margin: 2px 0 0; font-family: var(--display); font-weight: 500; font-size: 17px; letter-spacing: 3px; text-transform: uppercase; color: var(--ink); }
+  .lead { margin: 10px 0 0; max-width: 32ch; font-size: 15px; color: var(--ink); text-wrap: pretty; }
+
+  /* countdown */
+  .count { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .count h2 { margin: 0; font-size: 12px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: var(--sky-deep); }
+  .count .units { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; width: 100%; }
+  .unit { display: flex; flex-direction: column; align-items: center; padding: 10px 4px; border-radius: 16px; background: var(--card); border: 1px solid var(--line); }
+  .unit b { font-family: var(--display); font-weight: 700; font-size: 30px; line-height: 1.1; color: var(--sage-deep); font-variant-numeric: tabular-nums; }
+  .unit span { font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+  .count .done { display: none; margin: 0; font-family: var(--display); font-size: 22px; font-weight: 600; font-style: italic; color: var(--sage-deep); }
+  .count.is-done .units { display: none; }
+  .count.is-done .done { display: block; }
+
+  /* details */
+  .details { display: flex; flex-direction: column; border-radius: 20px; background: var(--card); border: 1px solid var(--line); overflow: hidden; }
+  .row { display: flex; align-items: center; gap: 14px; padding: 14px 16px; }
+  .row + .row { border-top: 1px solid var(--line); }
+  .row svg { flex: none; }
+  .row .k { display: block; font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--sky-deep); }
+  .row .v { display: block; font-size: 17px; font-weight: 800; color: var(--ink); line-height: 1.25; }
+  .row .s { display: block; font-size: 13px; font-weight: 600; color: var(--muted); }
+
+  /* guardianes: dos cajas cuadradas iguales, dragones al mismo alto y alineados abajo */
+  .guard { display: grid; grid-template-columns: 1.2fr 1fr; gap: 12px; align-items: end; }
+  .guard figure { margin: 0; position: relative; width: 100%; aspect-ratio: 1 / 1; max-width: 100%; }
+  .guard img { position: relative; z-index: 1; width: 100%; height: 100%; display: block; object-fit: contain; object-position: center bottom; filter: drop-shadow(0 10px 14px rgba(59, 58, 52, 0.14)); }
+  .guard figure::after { content: ""; position: absolute; left: 10%; right: 10%; bottom: -6px; height: 34px; border-radius: 999px; background: rgba(255, 255, 255, 0.85); filter: blur(10px); }
+
+  /* mesa de regalos */
+  .gifts { position: relative; display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 22px 18px 20px; border-radius: 20px; background: linear-gradient(180deg, rgba(185, 201, 223, 0.35), rgba(255, 252, 246, 0.9)); border: 1px solid rgba(143, 166, 199, 0.35); text-align: center; }
+  .gifts .sleepy { width: 68%; max-width: 250px; height: auto; display: block; margin-top: -8px; filter: drop-shadow(0 10px 14px rgba(59, 58, 52, 0.12)); }
+  .gifts h2 { margin: 0; font-family: var(--display); font-weight: 600; font-style: italic; font-size: 30px; line-height: 1.1; color: var(--sage-deep); }
+  .gifts p { margin: 0; max-width: 32ch; font-size: 14px; color: var(--muted); text-wrap: pretty; }
+  .gifts .evento { display: none; margin-top: 2px; padding: 8px 14px; border-radius: 999px; background: rgba(255, 255, 255, 0.85); border: 1px dashed var(--sand-deep); font-size: 14px; font-weight: 800; letter-spacing: 1px; color: var(--ink); }
+  .gifts .evento.show { display: inline-block; }
+  .gifts .btn { align-self: stretch; margin-top: 6px; }
+
+  /* actions */
+  .actions { display: flex; flex-direction: column; gap: 10px; }
+  .btn {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    min-height: 52px; padding: 12px 18px; border-radius: 999px;
+    font-size: 16px; font-weight: 800; text-decoration: none; letter-spacing: 0.3px;
+    transition: transform 120ms ease, filter 120ms ease;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn:focus-visible { outline: 3px solid var(--sky-deep); outline-offset: 3px; }
+  .btn-main { background: linear-gradient(90deg, var(--sage), var(--sage-deep)); color: #fff; box-shadow: 0 10px 22px rgba(94, 115, 82, 0.35); }
+  .btn-main:hover { filter: brightness(1.06); }
+  .btn-sand { background: var(--sand); color: var(--ink); }
+  .btn-sand:hover { filter: brightness(1.04); }
+  .btn-sky { background: var(--sky-deep); color: #fff; box-shadow: 0 10px 22px rgba(143, 166, 199, 0.4); }
+  .btn-sky:hover { filter: brightness(1.06); }
+  .btn-ghost { background: transparent; color: var(--ink); border: 1.5px solid rgba(59, 58, 52, 0.28); }
+  .btn-ghost:hover { border-color: var(--sage-deep); color: var(--sage-deep); }
+
+  footer { text-align: center; font-size: 13px; color: var(--muted); }
+  footer p { margin: 0; }
+  footer .fam { font-family: var(--display); font-style: italic; font-size: 16px; color: var(--sage-deep); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cloud, .egg .shell, .egg .burst, .egg .frag, .intro-hint, .stage .flying, .stage .spark, body.revealed .page { animation: none; }
+    .intro { transition: opacity 300ms ease, visibility 0s linear 300ms; }
+  }
+  @media (min-width: 720px) {
+    .page { padding: 48px 20px 48px; gap: 28px; }
+    .name { font-size: 88px; }
+  }
+</style>
+
+<div class="intro" id="intro">
+  <button class="egg" id="abrir" type="button" aria-label="Abrir la invitación">
+    <svg viewBox="0 0 340 340" role="img" aria-hidden="true">
+      <defs>
+        <linearGradient id="eggGrad" x1="0.2" y1="0" x2="0.8" y2="1">
+          <stop offset="0" stop-color="#fffdf8"></stop>
+          <stop offset="0.55" stop-color="#f3ebdb"></stop>
+          <stop offset="1" stop-color="#dfd2b9"></stop>
+        </linearGradient>
+        <radialGradient id="eggShine" cx="0.32" cy="0.22" r="0.5">
+          <stop offset="0" stop-color="#ffffff" stop-opacity="0.95"></stop>
+          <stop offset="1" stop-color="#ffffff" stop-opacity="0"></stop>
+        </radialGradient>
+        <radialGradient id="eggShade" cx="0.7" cy="0.85" r="0.6">
+          <stop offset="0" stop-color="#b9a98c" stop-opacity="0.45"></stop>
+          <stop offset="1" stop-color="#b9a98c" stop-opacity="0"></stop>
+        </radialGradient>
+        <radialGradient id="glowGrad" cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0" stop-color="#f1d77f" stop-opacity="0.75"></stop>
+          <stop offset="0.55" stop-color="#f1d77f" stop-opacity="0.25"></stop>
+          <stop offset="1" stop-color="#f1d77f" stop-opacity="0"></stop>
+        </radialGradient>
+        <filter id="paper" x="-5%" y="-5%" width="110%" height="110%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="noise"></feTurbulence>
+          <feColorMatrix in="noise" type="matrix" values="0 0 0 0 0.72  0 0 0 0 0.66  0 0 0 0 0.55  0 0 0 0.16 0" result="tint"></feColorMatrix>
+          <feComposite in="tint" in2="SourceGraphic" operator="in"></feComposite>
+        </filter>
+        <filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="6"></feGaussianBlur></filter>
+        <clipPath id="clipTop"><polygon points="0,0 340,0 340,152.5 254,152.5 248,148.5 226,162.5 202,144.5 178,164.5 154,142.5 130,160.5 108,140.5 86,152.5 0,152.5"></polygon></clipPath>
+        <clipPath id="clipBottom"><polygon points="0,150 86,150 108,138 130,158 154,140 178,162 202,142 226,160 248,146 254,150 340,150 340,340 0,340"></polygon></clipPath>
+        <clipPath id="clipEgg"><path d="M170 40 C232 40 266 125 266 195 C266 255 222 292 170 292 C118 292 74 255 74 195 C74 125 108 40 170 40 Z"></path></clipPath>
+      </defs>
+
+      <ellipse class="glow" cx="170" cy="170" rx="150" ry="150" fill="url(#glowGrad)"></ellipse>
+
+      <g class="burst" fill="#f1d77f">
+        <path d="M170 30 l5 14 14 5 -14 5 -5 14 -5 -14 -14 -5 14 -5z"></path>
+        <path transform="translate(290 90) scale(0.7)" d="M0 -19 l5 14 14 5 -14 5 -5 14 -5 -14 -14 -5 14 -5z"></path>
+        <path transform="translate(60 110) scale(0.8)" d="M0 -19 l5 14 14 5 -14 5 -5 14 -5 -14 -14 -5 14 -5z"></path>
+        <path transform="translate(300 220) scale(0.6)" d="M0 -19 l5 14 14 5 -14 5 -5 14 -5 -14 -14 -5 14 -5z"></path>
+        <path transform="translate(40 240) scale(0.65)" d="M0 -19 l5 14 14 5 -14 5 -5 14 -5 -14 -14 -5 14 -5z"></path>
+        <path transform="translate(235 20) scale(0.5)" d="M0 -19 l5 14 14 5 -14 5 -5 14 -5 -14 -14 -5 14 -5z" fill="#b9c9df"></path>
+        <path transform="translate(105 25) scale(0.5)" d="M0 -19 l5 14 14 5 -14 5 -5 14 -5 -14 -14 -5 14 -5z" fill="#b9c9df"></path>
+      </g>
+
+      <!-- nube -->
+      <g>
+        <ellipse cx="170" cy="318" rx="132" ry="14" fill="#3b3a34" opacity="0.08" filter="url(#soft)"></ellipse>
+        <path d="M52 318 C30 318 22 300 36 288 C28 270 50 258 68 268 C74 250 100 246 112 260 C124 244 158 242 170 258 C182 244 216 246 226 260 C240 248 266 252 272 268 C292 258 314 272 304 290 C318 300 310 318 288 318 Z" fill="#ffffff" stroke="#c9d6e8" stroke-width="2" stroke-linejoin="round"></path>
+        <path d="M70 300 C82 286 104 284 116 294 M140 290 C154 276 182 276 196 290 M220 298 C230 286 250 286 260 296" fill="none" stroke="#dbe4f0" stroke-width="2" stroke-linecap="round"></path>
+      </g>
+
+      <image class="peek" href="__PEEK__" x="70" y="50" width="200" height="204"></image>
+
+      <g class="shell">
+        <g class="egg-bottom" clip-path="url(#clipBottom)">
+          <path d="M170 40 C232 40 266 125 266 195 C266 255 222 292 170 292 C118 292 74 255 74 195 C74 125 108 40 170 40 Z" fill="url(#eggGrad)"></path>
+          <path d="M170 40 C232 40 266 125 266 195 C266 255 222 292 170 292 C118 292 74 255 74 195 C74 125 108 40 170 40 Z" fill="url(#eggShade)"></path>
+          <path d="M170 40 C232 40 266 125 266 195 C266 255 222 292 170 292 C118 292 74 255 74 195 C74 125 108 40 170 40 Z" fill="url(#eggShade)"></path>
+          <path d="M170 40 C232 40 266 125 266 195 C266 255 222 292 170 292 C118 292 74 255 74 195 C74 125 108 40 170 40 Z" fill="url(#eggShine)"></path>
+          <g clip-path="url(#clipEgg)">
+            <rect x="60" y="30" width="220" height="280" filter="url(#paper)" fill="#000"></rect>
+            <g fill="#8fa672" opacity="0.55">
+              <ellipse cx="118" cy="196" rx="7" ry="5" transform="rotate(-20 118 196)"></ellipse><ellipse cx="206" cy="222" rx="6" ry="4" transform="rotate(15 206 222)"></ellipse><ellipse cx="148" cy="252" rx="5" ry="4"></ellipse><ellipse cx="232" cy="178" rx="5" ry="3.5" transform="rotate(-30 232 178)"></ellipse><ellipse cx="100" cy="236" rx="4" ry="3"></ellipse>
+            </g>
+            <g fill="#b9c9df" opacity="0.7">
+              <ellipse cx="178" cy="182" rx="5" ry="4"></ellipse><ellipse cx="136" cy="224" rx="4" ry="3" transform="rotate(25 136 224)"></ellipse><ellipse cx="218" cy="256" rx="4" ry="3"></ellipse><ellipse cx="96" cy="200" rx="3" ry="2.5"></ellipse>
+            </g>
+            <g fill="#d8ccb6" opacity="0.9">
+              <ellipse cx="164" cy="212" rx="3" ry="2.5"></ellipse><ellipse cx="190" cy="262" rx="4" ry="3"></ellipse><ellipse cx="240" cy="214" rx="3" ry="2.5"></ellipse><ellipse cx="122" cy="270" rx="3" ry="2"></ellipse>
+            </g>
+          </g>
+          <path d="M170 40 C232 40 266 125 266 195 C266 255 222 292 170 292 C118 292 74 255 74 195 C74 125 108 40 170 40 Z" fill="none" stroke="#c9b997" stroke-width="2.5" stroke-linejoin="round" opacity="0.9"></path>
+          <polyline class="crack" points="86,150 108,138 130,158 154,140 178,162 202,142 226,160 248,146 254,150" fill="none" stroke="#8c7b5c" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"></polyline>
+        </g>
+
+        <g class="egg-top" clip-path="url(#clipTop)">
+          <path d="M170 40 C232 40 266 125 266 195 C266 255 222 292 170 292 C118 292 74 255 74 195 C74 125 108 40 170 40 Z" fill="url(#eggGrad)"></path>
+          <path d="M170 40 C232 40 266 125 266 195 C266 255 222 292 170 292 C118 292 74 255 74 195 C74 125 108 40 170 40 Z" fill="url(#eggShine)"></path>
+          <g clip-path="url(#clipEgg)">
+            <rect x="60" y="30" width="220" height="280" filter="url(#paper)" fill="#000"></rect>
+            <g fill="#8fa672" opacity="0.55">
+              <ellipse cx="150" cy="78" rx="6" ry="4" transform="rotate(-15 150 78)"></ellipse><ellipse cx="202" cy="100" rx="5" ry="4" transform="rotate(20 202 100)"></ellipse><ellipse cx="124" cy="118" rx="5" ry="3.5"></ellipse><ellipse cx="186" cy="60" rx="4" ry="3"></ellipse>
+            </g>
+            <g fill="#b9c9df" opacity="0.7">
+              <ellipse cx="172" cy="122" rx="5" ry="4"></ellipse><ellipse cx="222" cy="130" rx="4" ry="3"></ellipse><ellipse cx="108" cy="142" rx="3.5" ry="2.5"></ellipse>
+            </g>
+            <g fill="#d8ccb6" opacity="0.9">
+              <ellipse cx="140" cy="100" rx="3" ry="2.5"></ellipse><ellipse cx="212" cy="76" rx="3" ry="2"></ellipse><ellipse cx="160" cy="54" rx="2.5" ry="2"></ellipse>
+            </g>
+          </g>
+          <path d="M170 40 C232 40 266 125 266 195 C266 255 222 292 170 292 C118 292 74 255 74 195 C74 125 108 40 170 40 Z" fill="none" stroke="#c9b997" stroke-width="2.5" stroke-linejoin="round" opacity="0.9"></path>
+          <polyline class="crack" points="86,150 108,138 130,158 154,140 178,162 202,142 226,160 248,146 254,150" fill="none" stroke="#8c7b5c" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"></polyline>
+        </g>
+
+
+        <g class="frags">
+          <polygon class="frag f1" style="--dx:-70px; --dy:-60px; --rot:-120deg" points="128,150 142,142 136,160" fill="#efe6d3" stroke="#c9b997" stroke-width="1.5"></polygon>
+          <polygon class="frag f2" style="--dx:30px; --dy:-90px; --rot:160deg" points="176,152 190,146 184,164" fill="#efe6d3" stroke="#c9b997" stroke-width="1.5"></polygon>
+          <polygon class="frag f3" style="--dx:80px; --dy:-40px; --rot:90deg" points="222,150 236,146 232,162" fill="#efe6d3" stroke="#c9b997" stroke-width="1.5"></polygon>
+        </g>
+      </g>
+    </svg>
+  </button>
+  <p class="intro-hint">Toca el huevo para abrir</p>
+  <p class="intro-note">Sube el volumen</p>
+</div>
+<img class="flyer" id="vuelo" src="__VOLANDO__" alt="" aria-hidden="true">
+<audio id="musica" src="__AUDIO__" loop preload="auto"></audio>
+<button class="sound" id="sonido" type="button" aria-label="Silenciar música">
+  <svg class="fa fa-snd on fa-volume-high" viewBox="0 0 640 512" aria-hidden="true"><path fill="currentColor" d="M533.6 32.5C598.5 85.2 640 165.8 640 256s-41.5 170.7-106.4 223.5c-10.3 8.4-25.4 6.8-33.8-3.5s-6.8-25.4 3.5-33.8C557.5 398.2 592 331.2 592 256s-34.5-142.2-88.7-186.3c-10.3-8.4-11.8-23.5-3.5-33.8s23.5-11.8 33.8-3.5zM473.1 107c43.2 35.2 70.9 88.9 70.9 149s-27.7 113.8-70.9 149c-10.3 8.4-25.4 6.8-33.8-3.5s-6.8-25.4 3.5-33.8C475.3 341.3 496 301.1 496 256s-20.7-85.3-53.2-111.8c-10.3-8.4-11.8-23.5-3.5-33.8s23.5-11.8 33.8-3.5zm-60.5 74.5C434.1 199.1 448 225.9 448 256s-13.9 56.9-35.4 74.5c-10.3 8.4-25.4 6.8-33.8-3.5s-6.8-25.4 3.5-33.8C393.1 284.4 400 271 400 256s-6.9-28.4-17.7-37.3c-10.3-8.4-11.8-23.5-3.5-33.8s23.5-11.8 33.8-3.5zM301.1 34.8C312.6 40 320 51.4 320 64V448c0 12.6-7.4 24-18.9 29.2s-25 3.1-34.4-5.3L131.8 352H64c-35.3 0-64-28.7-64-64V224c0-35.3 28.7-64 64-64h67.8L266.7 40.1c9.4-8.4 22.9-10.4 34.4-5.3z"></path></svg>
+  <svg class="fa fa-snd off fa-volume-xmark" viewBox="0 0 576 512" aria-hidden="true"><path fill="currentColor" d="M301.1 34.8C312.6 40 320 51.4 320 64V448c0 12.6-7.4 24-18.9 29.2s-25 3.1-34.4-5.3L131.8 352H64c-35.3 0-64-28.7-64-64V224c0-35.3 28.7-64 64-64h67.8L266.7 40.1c9.4-8.4 22.9-10.4 34.4-5.3zM425 167l55 55 55-55c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-55 55 55 55c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-55-55-55 55c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l55-55-55-55c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0z"></path></svg>
+</button>
+<div class="sky" aria-hidden="true">
+  <div class="cloud cloud-1"></div>
+  <div class="cloud cloud-2"></div>
+  <div class="cloud cloud-3"></div>
+  <canvas id="sky"></canvas>
+</div>
+
+<main class="page">
+  <section class="hero">
+    <p class="eyebrow">Baby shower</p>
+    <div class="stage">
+      <div class="halo"></div>
+      <svg class="spark s1 fa-star" viewBox="0 0 576 512" aria-hidden="true"><path fill="currentColor" d="M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3 51.4 171.5c-12 1.8-22 10.2-25.7 21.7s-.7 24.2 7.9 32.7L137.8 329 113.2 474.7c-2 12 3 24.2 12.9 31.3s23 8 33.8 2.3l128.3-68.5 128.3 68.5c10.8 5.7 23.9 4.9 33.8-2.3s14.9-19.3 12.9-31.3L438.5 329 542.7 225.9c8.6-8.5 11.7-21.2 7.9-32.7s-13.7-19.9-25.7-21.7L381.2 150.3 316.9 18z"></path></svg>
+      <svg class="spark s2 fa-star" viewBox="0 0 576 512" aria-hidden="true"><path fill="currentColor" d="M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3 51.4 171.5c-12 1.8-22 10.2-25.7 21.7s-.7 24.2 7.9 32.7L137.8 329 113.2 474.7c-2 12 3 24.2 12.9 31.3s23 8 33.8 2.3l128.3-68.5 128.3 68.5c10.8 5.7 23.9 4.9 33.8-2.3s14.9-19.3 12.9-31.3L438.5 329 542.7 225.9c8.6-8.5 11.7-21.2 7.9-32.7s-13.7-19.9-25.7-21.7L381.2 150.3 316.9 18z"></path></svg>
+      <svg class="spark s3 fa-star" viewBox="0 0 576 512" aria-hidden="true"><path fill="currentColor" d="M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3 51.4 171.5c-12 1.8-22 10.2-25.7 21.7s-.7 24.2 7.9 32.7L137.8 329 113.2 474.7c-2 12 3 24.2 12.9 31.3s23 8 33.8 2.3l128.3-68.5 128.3 68.5c10.8 5.7 23.9 4.9 33.8-2.3s14.9-19.3 12.9-31.3L438.5 329 542.7 225.9c8.6-8.5 11.7-21.2 7.9-32.7s-13.7-19.9-25.7-21.7L381.2 150.3 316.9 18z"></path></svg>
+      <svg class="spark s4 fa-star" viewBox="0 0 576 512" aria-hidden="true"><path fill="currentColor" d="M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3 51.4 171.5c-12 1.8-22 10.2-25.7 21.7s-.7 24.2 7.9 32.7L137.8 329 113.2 474.7c-2 12 3 24.2 12.9 31.3s23 8 33.8 2.3l128.3-68.5 128.3 68.5c10.8 5.7 23.9 4.9 33.8-2.3s14.9-19.3 12.9-31.3L438.5 329 542.7 225.9c8.6-8.5 11.7-21.2 7.9-32.7s-13.7-19.9-25.7-21.7L381.2 150.3 316.9 18z"></path></svg>
+      <img class="flying wait" id="dragonHero" src="__VOLANDO__" alt="Dragón bebé volando">
+    </div>
+    <p class="invite">Te invitamos al baby shower de</p>
+    <h1 class="name">Elías</h1>
+    <p class="surname">De La Mora De La Torre</p>
+    <p class="lead">Un dragoncito está por nacer y queremos celebrarlo contigo.</p>
+  </section>
+
+  <section class="count" id="count">
+    <h2>Faltan</h2>
+    <div class="units">
+      <div class="unit"><b id="d">0</b><span>días</span></div>
+      <div class="unit"><b id="h">0</b><span>horas</span></div>
+      <div class="unit"><b id="m">0</b><span>min</span></div>
+      <div class="unit"><b id="s">0</b><span>seg</span></div>
+    </div>
+    <p class="done" id="done">¡Hoy es el baby shower!</p>
+  </section>
+
+  <section class="details" aria-label="Detalles del evento">
+    <div class="row">
+      <svg class="fa fa-row fa-calendar-days" viewBox="0 0 448 512" aria-hidden="true"><path fill="currentColor" d="M128 0c17.7 0 32 14.3 32 32V64H288V32c0-17.7 14.3-32 32-32s32 14.3 32 32V64h48c26.5 0 48 21.5 48 48v48H0V112C0 85.5 21.5 64 48 64H96V32c0-17.7 14.3-32 32-32zM0 192H448V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V192zm64 80v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16zm128 0v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H208c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H336zM64 400v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H208zm112 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H336c-8.8 0-16 7.2-16 16z"></path></svg>
+      <div><span class="k">Fecha</span><span class="v" id="txtFecha"></span></div>
+    </div>
+    <div class="row">
+      <svg class="fa fa-row fa-clock" viewBox="0 0 512 512" aria-hidden="true"><path fill="currentColor" d="M256 0a256 256 0 1 1 0 512A256 256 0 1 1 256 0zM232 120V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"></path></svg>
+      <div><span class="k">Hora</span><span class="v" id="txtHora"></span></div>
+    </div>
+    <div class="row">
+      <svg class="fa fa-row fa-location-dot" viewBox="0 0 384 512" aria-hidden="true"><path fill="currentColor" d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"></path></svg>
+      <div><span class="k">Lugar</span><span class="v">Casa Club</span><span class="s">Fraccionamiento La Rioja</span></div>
+    </div>
+  </section>
+
+  <section class="guard" aria-hidden="true">
+    <figure class="g1"><img src="__VERDE__" alt=""></figure>
+    <figure class="g2"><img src="__AZUL__" alt=""></figure>
+  </section>
+
+  <section class="gifts" aria-label="Mesa de regalos">
+    <img class="sleepy" src="__NUBE__" alt="Dragón bebé dormido sobre una nube">
+    <h2>Mesa de regalos</h2>
+    <p>Tenemos mesa de regalos en Liverpool. Puedes buscarla con el número de evento o abrirla desde aquí.</p>
+    <span class="evento" id="evento"></span>
+    <a class="btn btn-sky" id="btnLiv" href="#" target="_blank" rel="noopener">
+      <svg class="fa fa-btn fa-gift" viewBox="0 0 512 512" aria-hidden="true"><path fill="currentColor" d="M190.5 68.8L225.3 128H224 152c-22.1 0-40-17.9-40-40s17.9-40 40-40h2.2c14.9 0 28.8 7.9 36.3 20.8zM64 88c0 14.4 3.5 28 9.6 40H32c-17.7 0-32 14.3-32 32v64c0 17.7 14.3 32 32 32H480c17.7 0 32-14.3 32-32V160c0-17.7-14.3-32-32-32H438.4c6.1-12 9.6-25.6 9.6-40c0-48.6-39.4-88-88-88h-2.2c-31.9 0-61.5 16.9-77.7 44.4L256 85.5l-24.1-41C215.7 16.9 186.1 0 154.2 0H152C103.4 0 64 39.4 64 88zm336 0c0 22.1-17.9 40-40 40H288h-1.3l34.8-59.2C329.1 55.9 342.9 48 357.8 48H360c22.1 0 40 17.9 40 40zM32 288V464c0 26.5 21.5 48 48 48H224V288H32zM288 512H432c26.5 0 48-21.5 48-48V288H288V512z"></path></svg>
+      <span>Ver mesa de regalos</span>
+    </a>
+  </section>
+
+  <section class="actions" aria-label="Acciones">
+    <a class="btn btn-main" id="btnWa" href="#" target="_blank" rel="noopener">
+      <svg class="fa fa-btn fa-whatsapp" viewBox="0 0 448 512" aria-hidden="true"><path fill="currentColor" d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"></path></svg>
+      <span>Confirmar por WhatsApp</span>
+    </a>
+    <a class="btn btn-sand" id="btnMaps" href="#" target="_blank" rel="noopener">
+      <svg class="fa fa-btn fa-map-location-dot" viewBox="0 0 576 512" aria-hidden="true"><path fill="currentColor" d="M408 120c0 54.6-73.1 151.9-105.2 192c-7.7 9.6-22 9.6-29.6 0C241.1 271.9 168 174.6 168 120C168 53.7 221.7 0 288 0s120 53.7 120 120zm8 80.4c3.5-6.9 6.7-13.8 9.6-20.6c.5-1.2 1-2.5 1.5-3.7l116-46.4C558.9 123.4 576 135 576 152V422.8c0 9.8-6 18.6-15.1 22.3L416 503V200.4zM137.6 138.3c2.4 14.1 7.2 28.3 12.8 41.5c2.9 6.8 6.1 13.7 9.6 20.6V451.8L32.9 502.7C17.1 509 0 497.4 0 480.4V209.6c0-9.8 6-18.6 15.1-22.3l122.6-49zM327.8 332c13.9-17.4 35.7-45.7 56.2-77V504.3L192 449.4V255c20.5 31.3 42.3 59.6 56.2 77c20.5 25.6 59.1 25.6 79.6 0zM288 152a40 40 0 1 0 0-80 40 40 0 1 0 0 80z"></path></svg>
+      <span>Ver ubicación en Google Maps</span>
+    </a>
+    <a class="btn btn-ghost" id="btnCal" href="#" target="_blank" rel="noopener">
+      <svg class="fa fa-btn fa-calendar-plus" viewBox="0 0 448 512" aria-hidden="true"><path fill="currentColor" d="M96 32V64H48C21.5 64 0 85.5 0 112v48H448V112c0-26.5-21.5-48-48-48H352V32c0-17.7-14.3-32-32-32s-32 14.3-32 32V64H160V32c0-17.7-14.3-32-32-32S96 14.3 96 32zM448 192H0V464c0 26.5 21.5 48 48 48H400c26.5 0 48-21.5 48-48V192zM224 248c13.3 0 24 10.7 24 24v56h56c13.3 0 24 10.7 24 24s-10.7 24-24 24H248v56c0 13.3-10.7 24-24 24s-24-10.7-24-24V376H144c-13.3 0-24-10.7-24-24s10.7-24 24-24h56V272c0-13.3 10.7-24 24-24z"></path></svg>
+      <span>Agregar al calendario</span>
+    </a>
+  </section>
+
+  <footer>
+    <p>Con cariño,</p>
+    <p class="fam">la familia De La Mora De La Torre</p>
+  </footer>
+</main>
+
+<script>
+  // ===== Datos editables =====
+  var NUMERO_WHATSAPP = "523315209625";
+  var ENLACE_MAPS = "https://share.google/0ehsZe7EHtBbQsxqf";
+  var ENLACE_LIVERPOOL = "https://mesaderegalos.liverpool.com.mx/milistaderegalos/60016766";
+  var NUMERO_EVENTO = "60016766";
+  var FECHA_TEXTO = "Domingo 1 de noviembre";
+  var HORA_TEXTO = "A partir de las 2:00 p.m.";
+  var INICIO = "2026-11-01T14:00:00-06:00";
+  var FIN    = "2026-11-01T18:00:00-06:00";
+  // ===========================
+
+  document.getElementById("txtFecha").textContent = FECHA_TEXTO;
+  document.getElementById("txtHora").textContent = HORA_TEXTO;
+
+  var msg = "¡Hola! Confirmo asistencia al baby shower de Elías, el " + FECHA_TEXTO.toLowerCase() + ", " + HORA_TEXTO.toLowerCase() + " en la Casa Club de La Rioja.";
+  document.getElementById("btnWa").href = NUMERO_WHATSAPP
+    ? "https://wa.me/" + NUMERO_WHATSAPP + "?text=" + encodeURIComponent(msg)
+    : "https://wa.me/?text=" + encodeURIComponent(msg);
+  document.getElementById("btnMaps").href = ENLACE_MAPS;
+  document.getElementById("btnLiv").href = ENLACE_LIVERPOOL;
+  if (NUMERO_EVENTO) {
+    var ev = document.getElementById("evento");
+    ev.textContent = "Evento " + NUMERO_EVENTO;
+    ev.classList.add("show");
+  }
+
+  function calFmt(iso) {
+    return new Date(iso).toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
+  }
+  document.getElementById("btnCal").href = "https://calendar.google.com/calendar/render?action=TEMPLATE"
+    + "&text=" + encodeURIComponent("Baby shower de Elías")
+    + "&dates=" + calFmt(INICIO) + "/" + calFmt(FIN)
+    + "&details=" + encodeURIComponent("Baby shower con temática de dragones bebé. " + ENLACE_MAPS)
+    + "&location=" + encodeURIComponent("Casa Club, Fraccionamiento La Rioja")
+    + "&ctz=America/Mexico_City";
+
+  var target = new Date(INICIO).getTime();
+  var box = document.getElementById("count");
+  function tick() {
+    var diff = target - Date.now();
+    if (diff <= 0) {
+      box.classList.add("is-done");
+      document.getElementById("done").textContent = (Date.now() - target < 6 * 3600 * 1000) ? "¡Hoy es el baby shower!" : "¡Gracias por acompañarnos!";
+      return;
+    }
+    var s = Math.floor(diff / 1000);
+    document.getElementById("d").textContent = Math.floor(s / 86400);
+    document.getElementById("h").textContent = Math.floor(s % 86400 / 3600);
+    document.getElementById("m").textContent = Math.floor(s % 3600 / 60);
+    document.getElementById("s").textContent = s % 60;
+    setTimeout(tick, 1000);
+  }
+  tick();
+</script>
+
+<script>
+  (function () {
+    var canvas = document.getElementById("sky");
+    var ctx = canvas.getContext("2d");
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var W, H, dpr, parts = [];
+    var colors = ["#f1d77f", "#d9b94e", "#ffffff", "#b9c9df", "#f1d77f"];
+
+    function resize() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = window.innerWidth; H = window.innerHeight;
+      canvas.width = W * dpr; canvas.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var n = Math.round(Math.min(70, Math.max(34, (W * H) / 14000)));
+      parts = [];
+      for (var i = 0; i < n; i++) parts.push(make(true));
+    }
+    function make(anywhere) {
+      var star = Math.random() < 0.4;
+      return {
+        star: star,
+        x: Math.random() * W,
+        y: anywhere ? Math.random() * H : H + 20,
+        r: star ? 4 + Math.random() * 8 : 1 + Math.random() * 2,
+        vy: 0.08 + Math.random() * 0.22,
+        sway: 6 + Math.random() * 16,
+        swaySpeed: 0.25 + Math.random() * 0.5,
+        phase: Math.random() * Math.PI * 2,
+        tw: 0.5 + Math.random() * 1.2,
+        rot: Math.random() * Math.PI,
+        rotSpeed: (Math.random() - 0.5) * 0.3,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        alpha: 0.3 + Math.random() * 0.5
+      };
+    }
+    function drawStar(p, t) {
+      var s = p.r;
+      ctx.save();
+      ctx.translate(p.x + Math.sin(t * p.swaySpeed + p.phase) * p.sway, p.y);
+      ctx.rotate(p.rot + t * p.rotSpeed);
+      ctx.beginPath();
+      ctx.moveTo(0, -s);
+      ctx.quadraticCurveTo(0, 0, s, 0);
+      ctx.quadraticCurveTo(0, 0, 0, s);
+      ctx.quadraticCurveTo(0, 0, -s, 0);
+      ctx.quadraticCurveTo(0, 0, 0, -s);
+      ctx.closePath();
+      ctx.fillStyle = p.color;
+      ctx.shadowColor = p.color;
+      ctx.shadowBlur = 8;
+      ctx.fill();
+      ctx.restore();
+    }
+    function drawDot(p, t) {
+      ctx.beginPath();
+      ctx.arc(p.x + Math.sin(t * p.swaySpeed + p.phase) * p.sway, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color;
+      ctx.fill();
+    }
+    function frame(now) {
+      var t = now / 1000;
+      ctx.clearRect(0, 0, W, H);
+      for (var i = 0; i < parts.length; i++) {
+        var p = parts[i];
+        var twinkle = 0.55 + 0.45 * Math.sin(t * p.tw + p.phase);
+        ctx.globalAlpha = p.alpha * twinkle;
+        if (p.star) drawStar(p, t); else drawDot(p, t);
+        if (!reduce) {
+          p.y -= p.vy;
+          if (p.y < -20) { parts[i] = make(false); parts[i].x = Math.random() * W; }
+        }
+      }
+      ctx.globalAlpha = 1;
+      if (!reduce) requestAnimationFrame(frame);
+    }
+    window.addEventListener("resize", resize);
+    resize();
+    requestAnimationFrame(frame);
+  })();
+</script>
+
+<script>
+  (function () {
+    var intro = document.getElementById("intro");
+    var huevo = document.getElementById("abrir");
+    var musica = document.getElementById("musica");
+    var btn = document.getElementById("sonido");
+    var hayMusica = musica.getAttribute("src") && musica.getAttribute("src").indexOf("data:") === 0;
+    document.body.classList.add("locked");
+    musica.volume = 0.8;
+    if (!hayMusica) {
+      musica.removeAttribute("src");
+      var nota = document.querySelector(".intro-note");
+      if (nota) nota.hidden = true;
+    }
+
+    var peek = huevo.querySelector(".peek");
+    var vuelo = document.getElementById("vuelo");
+    var hero = document.getElementById("dragonHero");
+
+    function revelar() {
+      intro.classList.add("open");
+      document.body.classList.remove("locked");
+      document.body.classList.add("revealed");
+      window.scrollTo(0, 0);
+    }
+
+    function volar() {
+      var desde = peek.getBoundingClientRect();
+      revelar();
+      var hasta = hero.getBoundingClientRect();
+      if (!desde.width || !hasta.width || !vuelo.animate) {
+        hero.classList.remove("wait");
+        return;
+      }
+      vuelo.style.left = hasta.left + "px";
+      vuelo.style.top = hasta.top + "px";
+      vuelo.style.width = hasta.width + "px";
+      vuelo.style.height = hasta.height + "px";
+      vuelo.classList.add("show");
+      peek.style.opacity = "0";
+      var dx = desde.left - hasta.left, dy = desde.top - hasta.top, s = desde.width / hasta.width;
+      var mx = dx * 0.45 - 30, my = dy * 0.5 - 70, ms = (s + 1) / 2;
+      var anim = vuelo.animate([
+        { transform: "translate(" + dx + "px," + dy + "px) scale(" + s + ") rotate(0deg)" },
+        { transform: "translate(" + mx + "px," + my + "px) scale(" + ms + ") rotate(-10deg)", offset: 0.5 },
+        { transform: "translate(0,0) scale(1) rotate(0deg)" }
+      ], { duration: 1300, easing: "cubic-bezier(.45, 0, .2, 1)", fill: "forwards" });
+      anim.onfinish = function () {
+        hero.classList.remove("wait");
+        vuelo.classList.remove("show");
+      };
+    }
+
+    huevo.addEventListener("click", function () {
+      if (huevo.classList.contains("open") || huevo.classList.contains("shake")) return;
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reduce) {
+        huevo.classList.add("open");
+        hero.classList.remove("wait");
+        if (hayMusica) { var p0 = musica.play(); if (p0 && p0.catch) p0.catch(function () {}); btn.classList.add("show"); }
+        setTimeout(revelar, 150);
+        return;
+      }
+      huevo.classList.add("shake");
+      setTimeout(function () {
+        huevo.classList.remove("shake");
+        huevo.classList.add("open");
+        if (hayMusica) {
+          var p = musica.play();
+          if (p && p.catch) p.catch(function () {});
+          btn.classList.add("show");
+        }
+        setTimeout(volar, 1050);
+      }, 650);
+    });
+
+    btn.addEventListener("click", function () {
+      musica.muted = !musica.muted;
+      btn.classList.toggle("muted", musica.muted);
+      btn.setAttribute("aria-label", musica.muted ? "Activar música" : "Silenciar música");
+      if (!musica.muted && musica.paused) { var p = musica.play(); if (p && p.catch) p.catch(function () {}); }
+    });
+  })();
+</script>
