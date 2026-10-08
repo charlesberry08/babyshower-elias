@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Vista previa para compartir</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,600&family=Nunito:wght@700;800&display=swap">
+<style>
+  html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    position: relative;
+    background: #f7f3ea;
+    background-image:
+      radial-gradient(ellipse 70% 60% at 85% 20%, rgba(185, 201, 223, 0.7) 0%, rgba(185, 201, 223, 0) 70%),
+      radial-gradient(circle at 0% 100%, rgba(127, 148, 112, 0.22) 0%, rgba(127, 148, 112, 0) 50%),
+      radial-gradient(circle at 60% 110%, rgba(216, 204, 182, 0.6) 0%, rgba(216, 204, 182, 0) 50%);
+    font-family: 'Nunito', sans-serif;
+    color: #3b3a34;
+  }
+  .cloud { position: absolute; border-radius: 999px; background: rgba(255, 255, 255, 0.85); filter: blur(26px); }
+  .c1 { width: 420px; height: 130px; left: -80px; top: 60px; }
+  .c2 { width: 520px; height: 150px; right: -120px; bottom: 40px; }
+  .c3 { width: 300px; height: 100px; left: 380px; bottom: -30px; }
+  .star { position: absolute; color: #f1d77f; }
+  .star svg { display: block; width: 100%; height: 100%; }
+  .text { position: absolute; left: 96px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 6px; }
+  .eyebrow { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: 7px; text-transform: uppercase; color: #5e7352; }
+  .invite { margin: 10px 0 0; font-size: 24px; font-weight: 700; letter-spacing: 2px; color: #7b776c; }
+  .name { margin: -6px 0 0; font-family: 'Fraunces', serif; font-weight: 600; font-style: italic; font-size: 168px; line-height: 1; letter-spacing: -3px; color: #5e7352; }
+  .surname { margin: 4px 0 0; font-family: 'Fraunces', serif; font-weight: 500; font-size: 30px; letter-spacing: 7px; text-transform: uppercase; color: #3b3a34; }
+  .hint { margin: 26px 0 0; display: inline-flex; align-items: center; gap: 12px; padding: 12px 22px; border-radius: 999px; background: linear-gradient(90deg, #7f9470, #5e7352); color: #fff; font-size: 20px; font-weight: 800; align-self: flex-start; }
+  .hint svg { width: 22px; height: 22px; }
+  .dragon { position: absolute; right: 70px; top: 50%; transform: translateY(-50%) rotate(-3deg); width: 470px; height: auto; filter: drop-shadow(0 24px 30px rgba(59, 58, 52, 0.18)); }
+  .halo { position: absolute; right: 60px; top: 50%; width: 520px; height: 520px; transform: translateY(-50%); border-radius: 50%; background: radial-gradient(circle, rgba(241, 215, 127, 0.45) 0%, rgba(185, 201, 223, 0.35) 45%, rgba(185, 201, 223, 0) 70%); }
+</style>
+</head>
+<body>
+  <div class="cloud c1"></div>
+  <div class="cloud c2"></div>
+  <div class="cloud c3"></div>
+  <div class="halo"></div>
+  <img class="dragon" src="dragon-volando.webp" alt="">
+  <div class="star" style="left:640px;top:70px;width:34px;height:34px"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c1 7 5 11 12 12-7 1-11 5-12 12-1-7-5-11-12-12 7-1 11-5 12-12z"/></svg></div>
+  <div class="star" style="left:1080px;top:120px;width:26px;height:26px"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c1 7 5 11 12 12-7 1-11 5-12 12-1-7-5-11-12-12 7-1 11-5 12-12z"/></svg></div>
+  <div class="star" style="left:1120px;top:470px;width:20px;height:20px"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c1 7 5 11 12 12-7 1-11 5-12 12-1-7-5-11-12-12 7-1 11-5 12-12z"/></svg></div>
+  <div class="star" style="left:660px;top:520px;width:24px;height:24px"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c1 7 5 11 12 12-7 1-11 5-12 12-1-7-5-11-12-12 7-1 11-5 12-12z"/></svg></div>
+  <div class="star" style="left:40px;top:60px;width:18px;height:18px;color:#b9c9df"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c1 7 5 11 12 12-7 1-11 5-12 12-1-7-5-11-12-12 7-1 11-5 12-12z"/></svg></div>
+  <div class="text">
+    <p class="eyebrow">Baby shower</p>
+    <p class="invite">Te invitamos al baby shower de</p>
+    <h1 class="name">Elías</h1>
+    <p class="surname">De La Mora De La Torre</p>
+    <p class="hint"><svg viewBox="0 0 384 512" fill="currentColor"><path d="M192 0C86 0 0 128 0 288c0 106 86 192 192 192s192-86 192-192C384 128 298 0 192 0z"/></svg>Toca el huevo para abrir la invitación</p>
+  </div>
+</body>
+</html>
