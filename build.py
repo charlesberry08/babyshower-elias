@@ -14,7 +14,7 @@ OG = "".join([
     '<meta property="og:type" content="website">\n',
     '<meta property="og:site_name" content="Baby shower de Elías">\n',
     '<meta property="og:title" content="Baby shower de Elías">\n',
-    '<meta property="og:description" content="Un dragoncito está por nacer y queremos celebrarlo contigo. Toca el huevo para abrir la invitación.">\n',
+    '<meta property="og:description" content="Invitación al baby shower de Elías">\n',
     '<meta property="og:url" content="%s">\n' % SITIO,
     '<meta property="og:image" content="%sog.jpg">\n' % SITIO,
     '<meta property="og:image:secure_url" content="%sog.jpg">\n' % SITIO,
@@ -25,7 +25,7 @@ OG = "".join([
     '<meta property="og:locale" content="es_MX">\n',
     '<meta name="twitter:card" content="summary_large_image">\n',
     '<meta name="twitter:title" content="Baby shower de Elías">\n',
-    '<meta name="twitter:description" content="Un dragoncito está por nacer y queremos celebrarlo contigo.">\n',
+    '<meta name="twitter:description" content="Invitación al baby shower de Elías">\n',
     '<meta name="twitter:image" content="%sog.jpg">\n' % SITIO,
     '<meta name="theme-color" content="#f7f3ea">\n',
 ])
