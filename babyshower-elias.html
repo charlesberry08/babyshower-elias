@@ -378,7 +378,7 @@
     </div>
     <div class="row">
       <svg class="fa fa-row fa-location-dot" viewBox="0 0 384 512" aria-hidden="true"><path fill="currentColor" d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"></path></svg>
-      <div><span class="k">Lugar</span><span class="v">Casa Club</span><span class="s">Fraccionamiento La Rioja</span></div>
+      <div><span class="k">Lugar</span><span class="v" id="txtLugar"></span><span class="s" id="txtDireccion"></span></div>
     </div>
   </section>
 
@@ -422,19 +422,23 @@
 <script>
   // ===== Datos editables =====
   var NUMERO_WHATSAPP = "523315209625";
-  var ENLACE_MAPS = "https://share.google/0ehsZe7EHtBbQsxqf";
+  var LUGAR_NOMBRE = "Jardín la Madrid";
+  var LUGAR_DIRECCION = "Ignacio Allende 34, Miguel de la Madrid, 45239 Zapopan, Jal.";
+  var ENLACE_MAPS = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(LUGAR_NOMBRE + ", " + LUGAR_DIRECCION);
   var ENLACE_LIVERPOOL = "https://mesaderegalos.liverpool.com.mx/milistaderegalos/60016766";
   var NUMERO_EVENTO = "60016766";
-  var FECHA_TEXTO = "Domingo 1 de noviembre";
-  var HORA_TEXTO = "A partir de las 3:00 p.m.";
-  var INICIO = "2026-11-01T15:00:00-06:00";
-  var FIN    = "2026-11-01T19:00:00-06:00";
+  var FECHA_TEXTO = "Domingo 15 de noviembre";
+  var HORA_TEXTO = "A partir de las 10:00 a.m.";
+  var INICIO = "2026-11-15T10:00:00-06:00";
+  var FIN    = "2026-11-15T14:00:00-06:00";
   // ===========================
 
   document.getElementById("txtFecha").textContent = FECHA_TEXTO;
   document.getElementById("txtHora").textContent = HORA_TEXTO;
+  document.getElementById("txtLugar").textContent = LUGAR_NOMBRE;
+  document.getElementById("txtDireccion").textContent = LUGAR_DIRECCION;
 
-  var msg = "¡Hola! Confirmo asistencia al baby shower de Elías, el " + FECHA_TEXTO.toLowerCase() + ", " + HORA_TEXTO.toLowerCase() + " en la Casa Club de La Rioja.";
+  var msg = "¡Hola! Confirmo asistencia al baby shower de Elías, el " + FECHA_TEXTO.toLowerCase() + ", " + HORA_TEXTO.toLowerCase() + " en " + LUGAR_NOMBRE + ".";
   document.getElementById("btnWa").href = NUMERO_WHATSAPP
     ? "https://wa.me/" + NUMERO_WHATSAPP + "?text=" + encodeURIComponent(msg)
     : "https://wa.me/?text=" + encodeURIComponent(msg);
@@ -453,7 +457,7 @@
     + "&text=" + encodeURIComponent("Baby shower de Elías")
     + "&dates=" + calFmt(INICIO) + "/" + calFmt(FIN)
     + "&details=" + encodeURIComponent("Baby shower con temática de dragones bebé. " + ENLACE_MAPS)
-    + "&location=" + encodeURIComponent("Casa Club, Fraccionamiento La Rioja")
+    + "&location=" + encodeURIComponent(LUGAR_NOMBRE + ", " + LUGAR_DIRECCION)
     + "&ctz=America/Mexico_City";
 
   var target = new Date(INICIO).getTime();
